@@ -1,86 +1,27 @@
 {
 	"info": {
-		"_postman_id": "d57aac7d-932f-4b5d-b388-a25fc5c912aa",
+		"_postman_id": "cc2b26f6-ffcd-45ea-8c95-96af8f298766",
 		"name": "20180916",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "data_test",
-			"item": [
-				{
-					"name": "发表话题",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "a04c211b-7d74-4420-9a3c-2a6d25985781",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"错误的\b提示信息的断言\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    console.log(\"json data == \",jsonData)",
-									"    // 拿到error_msg 值",
-									"    var val = jsonData['error_msg']",
-									"    // 获取\b运行环境变量check_val",
-									"    var expect_val = pm.variables.get(\"check_val\");",
-									"    console.log(expect_val);",
-									"    // \b判断长度是否为1",
-									"    pm.expect(val).to.eql(expect_val);",
-									"});",
-									"",
-									"// var alldata = pm.response.json();",
-									"",
-									"// var topoc_id_val = alldata['topic_id']",
-									"// // \b定义变量 topicid",
-									"// pm.globals.set(\"topicid\", topoc_id_val);"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"accesstoken\":\"{{token}}\",\n\t\"title\":\"{{title}}\",\n\t\"tab\":\"{{tab}}\",\n\t\"content\":\"{{content}}\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/topics",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"topics"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
 		{
 			"name": "主题首页",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "c3827343-4f77-487b-b3e5-3c7a2d8232ab",
+						"id": "62c6ec8b-a40d-4a36-b656-c239dd47ae52",
 						"type": "text/javascript",
 						"exec": [
-							"pm.test(\"limit=1,返回数据的长度应该为1\", function () {",
+							"pm.test(\"limit=10,返回数据的长度应该为10\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    console.log(\"json data == \",jsonData)",
 							"    // 拿到data \b数组的长度",
 							"    var len = jsonData['data'].length",
 							"    ",
 							"    console.log(\"len == \",len)",
-							"    // \b判断长度是否为1",
+							"    // \b判断长度是否为10",
 							"    pm.expect(len).to.eql(10);",
 							"});",
 							"",
@@ -96,7 +37,7 @@
 							"});",
 							"",
 							"",
-							"pm.test(\"success 应该为true\", function () {",
+							"pm.test(\"每个数据返回的tab类型\", function () {",
 							"    // 获取整个服务器返回值-->转换为json",
 							"    var jsonData = pm.response.json();",
 							"    // \b调试打印  （postman console 界面）",
@@ -118,7 +59,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{base_url}}/topics?page=1&tab=ask&limit=10",
 					"host": [
@@ -146,12 +90,12 @@
 			"response": []
 		},
 		{
-			"name": "主题首页",
+			"name": "主题首页+assert",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "02fea1ec-7709-4922-8a80-098dc984a5c9",
+						"id": "71562bd9-b3ae-4333-ad1b-dc40253fa72d",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"状态码为200\", function () {",
@@ -173,7 +117,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{base_url}}/topic/5b9db718c7011d6643118185?mdrender=false&accesstoken=xxxxxxx",
 					"host": [
@@ -198,12 +145,68 @@
 			"response": []
 		},
 		{
+			"name": "发表话题",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c4ae0168-737a-453d-9da5-7ad52ac20ca7",
+						"type": "text/javascript",
+						"exec": [
+							"//用run的方式导入.csv数据文件",
+							"pm.test(\"错误提示信息的断言\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(\"json data == \",jsonData)",
+							"    // 拿到error_msg 值",
+							"    var val = jsonData['error_msg']",
+							"    // 获取\b运行环境变量check_val,从csv文件获取",
+							"    var expect_val = pm.variables.get(\"check_val\");",
+							"    console.log(expect_val);",
+							"    pm.expect(val).to.eql(expect_val);",
+							"});",
+							"",
+							"// var alldata = pm.response.json();",
+							"",
+							"// var topoc_id_val = alldata['topic_id']",
+							"// // \b定义变量 topicid",
+							"// pm.globals.set(\"topicid\", topoc_id_val);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{token}}\",\n\t\"title\":\"{{title}}\",\n\t\"tab\":\"{{tab}}\",\n\t\"content\":\"{{content}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/topics",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "更新主题",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "c017e724-3905-4cc0-acc2-38580553678a",
+						"id": "537faf66-310c-421c-a653-b88eb203616a",
 						"type": "text/javascript",
 						"exec": [
 							"var token = \"5470acfd-94e2-4e71-83f2-0ab65a1c5d18\";",
@@ -212,7 +215,7 @@
 							"",
 							"var title = \"abcdefg\";",
 							"var tab = \"ask\";",
-							"var content = \"xxxxxxxxx\";",
+							"var content = \"我是本来的主题内容\";",
 							"",
 							"var base_url = pm.globals.get(\"base_url\");",
 							"var url = base_url+\"/topics\";",
@@ -220,7 +223,7 @@
 							"",
 							"",
 							"",
-							"// 使用 PostMan 创建一个\b请求",
+							"// 使用 PostMan 创建一个\b请求，更新主题之前需要先发表一个主题",
 							"pm.sendRequest({",
 							"    url: url,        //请求路径",
 							"    method: 'POST',   //请求方法",
@@ -248,14 +251,14 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cdb5475e-db8f-4957-bd9b-be73c4fd6554",
+						"id": "781a13d7-7021-4c92-bcf5-fdaca790e329",
 						"type": "text/javascript",
 						"exec": [
 							"",
 							"",
 							"var current_id = pm.variables.get(\"cur_topicid\");",
 							"",
-							"pm.test(\"topic id值应该为 \b创建话题返回的id值一致\", function () {",
+							"pm.test(\"topic id值应该与创建话题返回的id值一致\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    var id = jsonData['topic_id'];",
 							"    pm.expect(id).to.eql(current_id);",
@@ -276,7 +279,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\",\n\t\"topic_id\":\"{{cur_topicid}}\",\n\t\"title\":\"xxxxxxxxxxx\",\n\t\"tab\":\"ask\",\n\t\"content\":\"的速度速度速度速度速度速度\"\n}"
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\",\n\t\"topic_id\":\"{{cur_topicid}}\",\n\t\"title\":\"xxxxxxxxxxx\",\n\t\"tab\":\"ask\",\n\t\"content\":\"我是更新的主题内容\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/topics/update",
@@ -286,6 +289,540 @@
 					"path": [
 						"topics",
 						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "收藏主题",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "21f564f2-bd3e-4bc6-bfc4-8e0b52bd1045",
+						"type": "text/javascript",
+						"exec": [
+							"var token = \"5470acfd-94e2-4e71-83f2-0ab65a1c5d18\";",
+							"",
+							"pm.globals.set(\"newtoken\", token);",
+							"",
+							"var title = \"我是新主题\";",
+							"var tab = \"ask\";",
+							"var content = \"我是内容12345678\";",
+							"",
+							"var base_url = pm.globals.get(\"base_url\");",
+							"var url = base_url+\"/topics\";",
+							"console.log(\"url=====\",url)",
+							"",
+							"",
+							"",
+							"// 使用 PostMan 创建一个\b请求，更新主题之前需要先发表一个主题",
+							"pm.sendRequest({",
+							"    url: url,        //请求路径",
+							"    method: 'POST',   //请求方法",
+							"    header: 'Content-Type:application/json',     //请求 header",
+							"    body: {             // 请求参数",
+							"        mode: 'raw',      // \bpostman支持的数据格式",
+							"        raw: JSON.stringify({     //将\btext 转换为JSON 数据类型",
+							"    \t    \"accesstoken\":token,",
+							"        \t\"title\":title,",
+							"        \t\"tab\":tab,",
+							"        \t\"content\":content",
+							"        })",
+							"    }",
+							"}, function (err, response) {",
+							"    console.log(\"json======\",response.json());   // 获取服务器响应值",
+							"    var result = response.json();",
+							"    var id=result['topic_id'];",
+							"    pm.globals.set(\"cur_topicid\", id);      //\b设置全局变量变量值",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\",\n\t\"topic_id\":\"{{cur_topicid}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/topic_collect/collect",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"topic_collect",
+						"collect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取消收藏话题",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fb27db17-47cf-41bc-bbf4-6b8c40ab61f4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\",\n\t\"topic_id\":\"{{cur_topicid}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/topic_collect/de_collect",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"topic_collect",
+						"de_collect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取用户所收藏的主题",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0b7fcc9c-c2d8-409e-bafe-73b40a94c9c7",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "47fdd2f5-739a-4a8b-b04c-7a66da966613",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{base_url}}/topic_collect/testuser1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"topic_collect",
+						"testuser1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新建评论",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eaa48cd1-2ace-4c6a-a2b1-6fb1c0f50529",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							"var alldata = pm.response.json();",
+							"var get_replyid = alldata['reply_id']",
+							"//\b定义变量 topicid",
+							"pm.globals.set(\"re_id\", get_replyid);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\",\n\t\"content\":\"我是评论\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/topic/{{cur_topicid}}/replies",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"topic",
+						"{{cur_topicid}}",
+						"replies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "为评论点赞",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fdf289ba-533a-401e-ba13-6c9c7e45d45c",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/reply/{{re_id}}/ups",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reply",
+						"{{re_id}}",
+						"ups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "用户详情",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{base_url}}/user/testuser1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"testuser1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "验证 accessToken 的正确性",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "36edf4a8-7b89-41bb-8f74-bd219165238b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/accesstoken",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"accesstoken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取未读消息数",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "67eec507-d19d-4d07-92f1-fd42541207ba",
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"pm.test(\"success为ture\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var status = jsonData['success']",
+							"    pm.expect(status).to.eql(true);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{base_url}}/message/count?accesstoken={{newtoken}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"message",
+						"count"
+					],
+					"query": [
+						{
+							"key": "accesstoken",
+							"value": "{{newtoken}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取已读和未读消息",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "815376f9-b854-4665-a797-21a32a69f360",
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"pm.test(\"success为ture\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var status = jsonData['success']",
+							"    pm.expect(status).to.eql(true);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"var get_data = jsonData['data']['hasnot_read_messages'][0];//获取第一个未读消息的返回数据",
+							"var id = get_data['id'];",
+							"",
+							"",
+							"pm.globals.set(\"getid\", id);//拿到未读消息的id给到请求参数,给下一个请求提供msg_id"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "dc3b15d3-61d5-42c2-91ef-f0b240a07b92",
+						"type": "text/javascript",
+						"exec": [
+							"//用其他账号testuser10评论testuser1发表的话题",
+							"var token = \"aa1903f8-b3da-4bee-888e-d600cade4b52\";",
+							"",
+							"var base_url = pm.globals.get(\"base_url\");",
+							"var url = base_url+\"/topic/{{cur_topicid}}/replies\";",
+							"",
+							"pm.sendRequest({",
+							"    url: url,        //请求路径",
+							"    method: 'POST',   //请求方法",
+							"    header: 'Content-Type:application/json',     //请求 header",
+							"    body: {             // 请求参数",
+							"        mode: 'raw',      // \bpostman支持的数据格式",
+							"        raw: JSON.stringify({     //将\btext 转换为JSON 数据类型",
+							"    \t    \"accesstoken\":token,",
+							"            \"content\":\"我是testuser10发表的评论\"",
+							"        })",
+							"    }",
+							"});",
+							"",
+							"  ",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{base_url}}/messages?accesstoken={{newtoken}}&mdrender=false",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"messages"
+					],
+					"query": [
+						{
+							"key": "accesstoken",
+							"value": "{{newtoken}}"
+						},
+						{
+							"key": "mdrender",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "标记单个消息为已读",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ace48cec-21c8-46b6-97ef-f6c4ccab90f2",
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "23cc1152-5f3f-4d1d-a002-6bd6e9897f75",
+						"type": "text/javascript",
+						"exec": [
+							"var getid=pm.globals.get(\"getid\");",
+							"",
+							"",
+							"pm.test(\"标记的msg_id和返回的数据id相同\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var reply_id=jsonData['marked_msg_id'];",
+							"    pm.expect(reply_id).to.eql(getid);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/message/mark_one/{{getid}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"message",
+						"mark_one",
+						"{{getid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "标记全部已读",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "17de129a-51f3-426c-a676-c4bacb9164f6",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"success为ture\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var status = jsonData['success']",
+							"    pm.expect(status).to.eql(true);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/message/mark_all",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"message",
+						"mark_all"
 					]
 				}
 			},
