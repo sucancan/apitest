@@ -1,15 +1,38 @@
 {
-  "id": "146e52f0-fd32-4814-8e58-8a3c0f4d5eb7",
+  "id": "e0ee1c0d-68ff-4f63-8ac0-92f2643ce567",
   "values": [
     {
       "key": "base_url",
       "value": "http://118.31.19.120:3000/api/v1",
-      "description": "",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "newtoken",
+      "value": "5470acfd-94e2-4e71-83f2-0ab65a1c5d18",
+      "enabled": true
+    },
+    {
+      "key": "cur_topicid",
+      "value": "5ba648e94e328d184ff96383",
+      "enabled": true
+    },
+    {
+      "key": "re_id",
+      "value": "5ba8f00b868eafa166b810bf",
+      "enabled": true
+    },
+    {
+      "key": "getid",
+      "value": "5ba8f69a868eafa166b810ca",
       "enabled": true
     }
   ],
   "name": "My Workspace Globals",
   "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2018-09-16T05:36:57.028Z",
-  "_postman_exported_using": "Postman/6.2.5"
+  "_postman_exported_at": "2018-09-24T14:46:14.597Z",
+  "_postman_exported_using": "Postman/6.3.0"
 }
