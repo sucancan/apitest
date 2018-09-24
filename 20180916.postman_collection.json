@@ -279,7 +279,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\",\n\t\"topic_id\":\"{{cur_topicid}}\",\n\t\"title\":\"xxxxxxxxxxx\",\n\t\"tab\":\"ask\",\n\t\"content\":\"我是更新的主题内容\"\n}"
+					"raw": "{\n\t\"accesstoken\":\"{{newtoken}}\",\n\t\"topic_id\":\"{{cur_topicid}}\",\n\t\"title\":\"我是更新的话题标题\",\n\t\"tab\":\"ask\",\n\t\"content\":\"我是更新的主题内容\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/topics/update",
@@ -377,6 +377,18 @@
 						"type": "text/javascript",
 						"exec": [
 							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "29f61ff2-6ff1-46c3-b36b-9446ca6124fb",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
 						]
 					}
 				}
@@ -648,7 +660,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "815376f9-b854-4665-a797-21a32a69f360",
+						"id": "93aa3253-4b4c-4932-9fda-516e8a4aaa1f",
 						"type": "text/javascript",
 						"exec": [
 							"",
@@ -670,14 +682,15 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "dc3b15d3-61d5-42c2-91ef-f0b240a07b92",
+						"id": "7bdd46c3-5d47-42c6-b723-dda7ff4ba8b3",
 						"type": "text/javascript",
 						"exec": [
 							"//用其他账号testuser10评论testuser1发表的话题",
 							"var token = \"aa1903f8-b3da-4bee-888e-d600cade4b52\";",
-							"",
 							"var base_url = pm.globals.get(\"base_url\");",
-							"var url = base_url+\"/topic/{{cur_topicid}}/replies\";",
+							"var cur_id = pm.globals.get(\"cur_topicid\");",
+							"var url = base_url+\"/topic/\"+cur_id+\"/replies\";",
+							"console.log(\"url=====\",url)",
 							"",
 							"pm.sendRequest({",
 							"    url: url,        //请求路径",
@@ -687,12 +700,11 @@
 							"        mode: 'raw',      // \bpostman支持的数据格式",
 							"        raw: JSON.stringify({     //将\btext 转换为JSON 数据类型",
 							"    \t    \"accesstoken\":token,",
-							"            \"content\":\"我是testuser10发表的评论\"",
+							"            \"content\":\"我是testuser10发表的内容\"",
 							"        })",
 							"    }",
 							"});",
-							"",
-							"  ",
+							"   ",
 							"",
 							"",
 							""
@@ -705,7 +717,7 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "{{base_url}}/messages?accesstoken={{newtoken}}&mdrender=false",
+					"raw": "{{base_url}}/messages?accesstoken={{newtoken}}&mdrender=true",
 					"host": [
 						"{{base_url}}"
 					],
@@ -719,7 +731,7 @@
 						},
 						{
 							"key": "mdrender",
-							"value": "false"
+							"value": "true"
 						}
 					]
 				}
